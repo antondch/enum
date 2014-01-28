@@ -1,23 +1,43 @@
 /**
- * Created by Jessie on 23.01.14.
+ * Created by Crazy Horse on 23.01.14.
  */
 package ru.dch.enums
 {
-import flash.utils.describeType;
+import avmplus.getQualifiedClassName;
 
+import flash.utils.describeType;
+import flash.utils.getDefinitionByName;
+
+/**
+ * This is abstract class for enumeration types, don't instantiate it.
+ */
 public class Enumeration
 {
     private static var elements:Vector.<Enumeration> = new Vector.<Enumeration>();
-    private var _value:*;
+    protected var _value:*;
 
     public function Enumeration()
     {
+        testAbstract();
         var clazz: Class= Object(this).constructor;
-        var a =describeType(clazz);
         elements.push(this);
+        var elementsLen:int =getElementsList(clazz).length;
+        var constNum: int = XMLList(describeType(clazz)).constant.length();
+        if(elementsLen>constNum)
+        {
+            throw new EnumError(EnumError.INITIALISATION_ERROR_MESSAGE+": "+clazz,EnumError.INITIALISATION_ERROR_CODE);
+        }
     }
 
-
+    private function testAbstract():void
+    {
+        var className : String = getQualifiedClassName(this);
+        if (getDefinitionByName(className) == Enumeration)
+        {
+            throw new ArgumentError(
+                    className + " Class can not be instantiated.");
+        }
+    }
 
     public static function getElementsList(enumerationClass:Class):Vector.<Enumeration>
     {
@@ -41,16 +61,6 @@ public class Enumeration
             }
         }
         return result;
-    }
-
-    protected function get value():*
-    {
-        return _value;
-    }
-
-    protected function set value(value:*):void
-    {
-        _value = value;
     }
 }
 }

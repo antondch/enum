@@ -3,19 +3,19 @@
  */
 package ru.dch.enums
 {
-internal class IntEnumeration extends Enumeration
+internal class UintEnumeration extends Enumeration
 {
-    public function IntEnumeration(value:int)
+    public function UintEnumeration(value:uint)
     {
         this.value = value;
     }
 
-    protected function get value():int
+    protected function get value():uint
     {
         return _value;
     }
 
-    protected function set value(value:int):void
+    protected function set value(uint:*):void
     {
         _value = value;
     }
